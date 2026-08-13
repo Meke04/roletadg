@@ -1,4 +1,19 @@
+"use client";
+
+import { FormEvent, useState } from "react";
+
 export default function NavBar() {
+    const [pesquisa, setPesquisa] = useState('');
+
+    async function pesquisar(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        const resposta = await fetch(`/api/jogos?pesquisa=${pesquisa}`);
+        const jogos = await resposta.json();
+
+        console.log(jogos);
+    }
+
     return (
         <nav className="fixed top-0 z-20 w-full border-b border-gray-200 bg-white">
             <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between p-4">
@@ -25,19 +40,13 @@ export default function NavBar() {
                                 <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                             </svg>
                         </div>
-
-                        <input type="text" id="search" className="block w-full rounded-lg border border-gray-300 bg-gray-50 py-2.5 pl-9 pr-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500" placeholder="Pesquisar" />
+                        <form onSubmit={pesquisar}>
+                            <input type="text" value={pesquisa} onChange={(e) => setPesquisa(e.target.value)} 
+                            className="block w-full rounded-lg border border-gray-300 bg-gray-50 py-2.5 pl-9 pr-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500" placeholder="Pesquisar" 
+                            />
+                        </form>
                     </div>
-
-                    {/* Botão do menu mobile */}
-                    <button type="button" className="ml-2 inline-flex h-10 w-10 items-center justify-center rounded-lg text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 md:hidden" aria-label="Abrir menu">
-                        <svg className="h-6 w-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="M5 7h14M5 12h14M5 17h14" />
-                        </svg>
-                    </button>
-
                 </div>
-
             </div>
         </nav>
     );
