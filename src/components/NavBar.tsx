@@ -8,7 +8,7 @@ export default function NavBar() {
     async function pesquisar(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        const resposta = await fetch(`/api/jogos?pesquisa=${pesquisa}`);
+        const resposta = await fetch(`https://roletadg-back.vercel.app/api/jogos?pesquisa=${encodeURIComponent(pesquisa)}`);
         const jogos = await resposta.json();
 
         console.log(jogos);
